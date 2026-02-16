@@ -1,4 +1,4 @@
-# Structural Portfolio UK
+# Structural Portfolio - UK
 A personal catalog of structural engineering projects designed during my 8 years working in UK.  
 This project was developed for the **SoftUni Django Basics Regular Exam** – February 2026.
 
@@ -15,7 +15,7 @@ This project was developed for the **SoftUni Django Basics Regular Exam** – Fe
 
 ## Local Setup
 1. Clone the repository: 
-    - git clone https://github.com/IfSD77/Django-Basics---Individual-Project.git
+    - [git clone](https://github.com/IfSD77/Django-Basics---Individual-Project.git)
     - cd struct-portfolio-uk
 2. Create and activate virtual environment:
     - python -m venv .venv

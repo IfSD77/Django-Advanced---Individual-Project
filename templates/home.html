@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="bg">
-<head>
-    <title>Structural Portfolio UK</title>
-</head>
-<body>
-    <h1>Catalogue of designed buildings, UK</h1>
-    <p>We will add more projects very soon.</p>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Structural Portfolio UK{% endblock %}
+
+{% block content %}
+  <div class="text-center my-5">
+    <h1 class="display-4">Catalogue of Designed Buildings – UK</h1>
+    <p class="lead text-muted mb-4">
+      A collection of structural engineering projects from my 8 years in the UK.
+    </p>
+    <p class="lead">
+      More projects coming soon. Check out the <a href="{% url 'project_list' %}" class="text-primary">full catalog here</a>.
+    </p>
+  </div>
+{% endblock %}
