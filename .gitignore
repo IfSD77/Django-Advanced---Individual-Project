@@ -2,15 +2,9 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-
 db.sqlite3
-
 media/
-
 .idea/
-
 staticfiles/
-
 .env
-
 *.log
