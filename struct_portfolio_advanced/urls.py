@@ -1,5 +1,5 @@
 """
-URL configuration for struct_portfolio_uk project.
+URL configuration for struct_portfolio_advanced project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.2/topics/http/urls/
