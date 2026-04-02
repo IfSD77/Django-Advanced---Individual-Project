@@ -1,40 +1,35 @@
-"""
-URL configuration for struct_portfolio_advanced project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
+
+# Projects views
 from projects.views import (
     ProjectListView, ProjectDetailView, ProjectCreateView,
     ProjectUpdateView, ProjectDeleteView, project_stats,
     project_by_year, project_by_type, projects_by_designer
 )
-from accounts.views import RegisterView, CustomLoginView, logout_view
+
+# Accounts views
+from accounts.views import RegisterView, CustomLoginView, CustomLogoutView
+
+# API views
+from projects.api_views import ProjectListAPI, ProjectDetailAPI, ProjectCreateAPI
+
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
+    # Authentication
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', CustomLoginView.as_view(), name='login'),
-    path('logout/', logout_view, name='logout'),
+    path('logout/', CustomLogoutView.as_view(), name='logout'),
 
+    # Home
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
 
+    # Projects web views
     path('projects/add/', ProjectCreateView.as_view(), name='project_add'),
     path('projects/<slug:slug>/edit/', ProjectUpdateView.as_view(), name='project_edit'),
     path('projects/<slug:slug>/delete/', ProjectDeleteView.as_view(), name='project_delete'),
@@ -48,6 +43,11 @@ urlpatterns = [
 
     path('projects/', ProjectListView.as_view(), name='project_list'),
     path('projects/<slug:slug>/', ProjectDetailView.as_view(), name='project_detail'),
+
+    # ================== API Endpoints ==================
+    path('api/projects/', ProjectListAPI.as_view(), name='api_project_list'),
+    path('api/projects/<slug:slug>/', ProjectDetailAPI.as_view(), name='api_project_detail'),
+    path('api/projects/create/', ProjectCreateAPI.as_view(), name='api_project_create'),
 ]
 
 handler404 = 'django.views.defaults.page_not_found'

@@ -3,6 +3,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from accounts.mixins import AdministratorRequiredMixin
 from designers.models import Designer
 from .forms import ProjectForm
 from .models import Project, ConstructionType
@@ -38,6 +39,26 @@ class ProjectUpdateView(UpdateView):
 
 
 class ProjectDeleteView(DeleteView):
+    model = Project
+    template_name = 'projects/project_confirm_delete.html'
+    success_url = reverse_lazy('project_list')
+
+
+class ProjectCreateView(AdministratorRequiredMixin, CreateView):
+    model = Project
+    form_class = ProjectForm
+    template_name = 'projects/project_form.html'
+    success_url = reverse_lazy('project_list')
+
+
+class ProjectUpdateView(AdministratorRequiredMixin, UpdateView):
+    model = Project
+    form_class = ProjectForm
+    template_name = 'projects/project_form.html'
+    success_url = reverse_lazy('project_list')
+
+
+class ProjectDeleteView(AdministratorRequiredMixin, DeleteView):
     model = Project
     template_name = 'projects/project_confirm_delete.html'
     success_url = reverse_lazy('project_list')
