@@ -1,9 +1,18 @@
+from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import CreateView
-from django.urls import reverse_lazy
 from .forms import RegisterForm, LoginForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import UpdateView
+from django.urls import reverse_lazy
+from .forms import ProfileForm
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from .models import Profile
+from .serializers import ProfileSerializer
 
 class RegisterView(CreateView):
     form_class = RegisterForm
@@ -27,3 +36,27 @@ class CustomLoginView(LoginView):
 
 class CustomLogoutView(LogoutView):
     next_page = reverse_lazy('home')
+
+
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = Profile
+    form_class = ProfileForm
+    template_name = 'accounts/profile.html'
+    success_url = reverse_lazy('profile')
+
+    def get_object(self, queryset=None):
+        profile, created = Profile.objects.get_or_create(user=self.request.user)
+        return profile
+
+    def form_valid(self, form):
+        messages.success(self.request, "Profile updated successfully!")
+        return super().form_valid(form)
+
+
+class ProfileAPI(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        profile, created = Profile.objects.get_or_create(user=request.user)
+        serializer = ProfileSerializer(profile)
+        return Response(serializer.data)

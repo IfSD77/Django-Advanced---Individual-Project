@@ -10,10 +10,10 @@ from projects.views import (
 )
 
 # Accounts views
-from accounts.views import RegisterView, CustomLoginView, CustomLogoutView
+from accounts.views import RegisterView, CustomLoginView, CustomLogoutView, ProfileUpdateView, ProfileAPI
 
 # API views
-from projects.api_views import ProjectListAPI, ProjectDetailAPI, ProjectCreateAPI
+from projects.api_views import ProjectListAPI, ProjectDetailAPI, ProjectCreateAPI, DesignerListAPI
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -25,6 +25,7 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
+    path('profile/', ProfileUpdateView.as_view(), name='profile'),
 
     # Home
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
@@ -48,6 +49,8 @@ urlpatterns = [
     path('api/projects/', ProjectListAPI.as_view(), name='api_project_list'),
     path('api/projects/<slug:slug>/', ProjectDetailAPI.as_view(), name='api_project_detail'),
     path('api/projects/create/', ProjectCreateAPI.as_view(), name='api_project_create'),
+    path('api/designers/', DesignerListAPI.as_view(), name='api_designer_list'),
+    path('api/profile/', ProfileAPI.as_view(), name='api_profile'),
 ]
 
 handler404 = 'django.views.defaults.page_not_found'
