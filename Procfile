@@ -1,1 +1,1 @@
-web: gunicorn struct_portfolio_advanced.wsgi --log-file - --timeout 120
+web: gunicorn struct_portfolio_advanced.wsgi --log-file - --timeout 180
