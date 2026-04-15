@@ -13,6 +13,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import Profile
 from .serializers import ProfileSerializer
+from .tasks import send_welcome_email
+
 
 class RegisterView(CreateView):
     form_class = RegisterForm
@@ -22,6 +24,9 @@ class RegisterView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
+
+        send_welcome_email.delay(user.email, user.username)
+
         return redirect('home')
 
 
