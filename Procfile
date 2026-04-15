@@ -1,0 +1,1 @@
+web: gunicorn struct_portfolio_advanced.wsgi --log-file -
