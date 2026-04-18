@@ -6,20 +6,25 @@ from django.dispatch import receiver
 
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
-    phone = models.CharField(
-        max_length=20,
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    company = models.CharField(max_length=100, blank=True, null=True)
+
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='customuser_set',
         blank=True,
-        null=True
+        verbose_name='groups'
     )
-    company = models.CharField(
-        max_length=100,
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='customuser_set',
         blank=True,
-        null=True
+        verbose_name='user permissions'
     )
 
     class Meta:
-        verbose_name = 'User'
-        verbose_name_plural = 'Users'
+        verbose_name = 'user'
+        verbose_name_plural = 'users'
 
     def __str__(self):
         return self.username
@@ -54,3 +59,4 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=CustomUser)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+

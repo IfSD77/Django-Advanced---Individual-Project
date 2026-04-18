@@ -1,17 +1,31 @@
 {% extends 'base.html' %}
 
-{% block title %}Page Not Found{% endblock %}
+{% block title %}Page Not Found - Structural Portfolio UK{% endblock %}
 
 {% block content %}
-  <div class="container my-5 text-center">
-    <h1 class="display-1 text-danger">404</h1>
-    <h2>Oops! Page Not Found</h2>
-    <p class="lead">The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
-    
-    <a href="{% url 'home' %}" class="btn btn-primary btn-lg mt-4">Go to Home Page</a>
-    
-    <p class="mt-5 text-muted">
-      If you believe this is an error, please contact the administrator.
-    </p>
-  </div>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-1 text-danger mb-4">404</h1>
+            <h2 class="mb-4">Oops! Page Not Found</h2>
+            <p class="lead mb-5">
+                The page you are looking for might have been removed, 
+                had its name changed, or is temporarily unavailable.
+            </p>
+            
+            <div class="mb-5">
+                <a href="{% url 'home' %}" class="btn btn-primary btn-lg me-3">
+                    ← Back to Home
+                </a>
+                <a href="{% url 'project_list' %}" class="btn btn-outline-secondary btn-lg">
+                    View All Projects
+                </a>
+            </div>
+
+            <p class="text-muted">
+                If you believe this is an error, please contact the administrator.
+            </p>
+        </div>
+    </div>
+</div>
 {% endblock %}

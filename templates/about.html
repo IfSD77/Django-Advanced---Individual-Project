@@ -1,20 +1,32 @@
 {% extends 'base.html' %}
 
-{% block title %}About{% endblock %}
+{% block title %}About - Structural Portfolio UK{% endblock %}
 
 {% block content %}
-  <h1 class="mb-4">About this Portfolio</h1>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h2 class="mb-4">About this Portfolio</h2>
+            <p class="lead">
+                This is a personal collection of structural engineering projects I designed during my 8 years working in the UK.
+            </p>
+            <p>
+                The application was developed as part of the <strong>SoftUni Django Advanced Regular Exam – April 2026</strong> 
+                and demonstrates advanced Django concepts: custom user model, group-based permissions, REST API, 
+                asynchronous tasks with Celery, and clean architectural design.
+            </p>
 
-  <p>This is a personal collection of structural engineering projects I designed during my 8 years in the UK.</p>
-  <p>The application demonstrates Django Advanced: models, forms, views, templates, PostgreSQL database and Bootstrap design.</p>
-
-  <h3>Technologies used</h3>
-  <ul>
-    <li>Django 5.2</li>
-    <li>PostgreSQL</li>
-    <li>Bootstrap 5</li>
-    <li>ImageField with Pillow</li>
-  </ul>
-
-  <p>Created for SoftUni Django Advanced Regular Exam – April 2026</p>
+            <h4 class="mt-5">Technologies Used</h4>
+            <ul>
+                <li><strong>Django 5.2.10</strong></li>
+                <li>PostgreSQL (local development)</li>
+                <li>SQLite (production)</li>
+                <li>Django REST Framework</li>
+                <li>Celery + Redis (asynchronous tasks)</li>
+                <li>Bootstrap 5</li>
+                <li>Gunicorn + Nginx (deployment)</li>
+            </ul>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -3,42 +3,54 @@
 {% block title %}{{ project.name }}{% endblock %}
 
 {% block content %}
-  <h1 class="mb-4">{{ project.name }}</h1>
+<div class="container my-5">
+    <h1 class="mb-4">{{ project.name }}</h1>
+    
+    {% if project.image %}
+        <img src="{{ project.image.url }}" alt="{{ project.name }}" class="img-fluid mb-4 rounded shadow" style="max-height: 500px; object-fit: contain;">
+    {% else %}
+        <img src="https://via.placeholder.com/800x500?text=No+Image+Available" alt="No image" class="img-fluid mb-4 rounded shadow">
+    {% endif %}
 
-  <div class="row mb-5">
-    <div class="col-md-6">
-      <h4>Project Details</h4>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"><strong>Built in:</strong> {{ project.built_in|default:"N/A" }}</li>
-        <li class="list-group-item"><strong>Location:</strong> {{ project.location }}, {{ project.postcode }}</li>
-        <li class="list-group-item"><strong>Construction Type:</strong> {{ project.construction_type }}</li>
-        <li class="list-group-item"><strong>Contract Value:</strong> {{ project.get_contract_value_short }}</li>
-      </ul>
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <h4>Project Details</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Built in:</strong> {{ project.built_in|default:"N/A" }}</li>
+                <li class="list-group-item"><strong>Location:</strong> {{ project.location }}, {{ project.postcode }}</li>
+                <li class="list-group-item"><strong>Construction Type:</strong> {{ project.construction_type }}</li>
+                <li class="list-group-item"><strong>Contract Value:</strong> {{ project.get_contract_value_short }}</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h4>Description</h4>
+            <p class="lead">{{ project.description|linebreaks|default:"No description available." }}</p>
+        </div>
     </div>
 
-    <div class="col-md-6">
-      <h4>Description</h4>
-      <p class="lead">{{ project.description|linebreaks|default:"No description available." }}</p>
+    <h3>Project Team</h3>
+    {% if project.participations.exists %}
+        <ul class="list-group mb-4">
+            {% for participation in project.participations.all %}
+                <li class="list-group-item">
+                    <strong>{{ participation.designer }}</strong>
+                    <span class="badge bg-primary ms-2">{{ participation.get_role_display }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">No team members assigned yet.</p>
+    {% endif %}
+
+    {% if user.is_authenticated and user.is_superuser %}
+        <div class="mt-4">
+            <a href="{% url 'project_edit' project.slug %}" class="btn btn-warning me-2">Edit Project</a>
+            <a href="{% url 'project_delete' project.slug %}" class="btn btn-danger">Delete Project</a>
+        </div>
+    {% endif %}
+
+    <div class="mt-5">
+        <a href="{% url 'project_list' %}" class="btn btn-outline-secondary">Back to All Projects</a>
     </div>
-  </div>
-
-  <h3>Project Team</h3>
-  {% if project.participations.exists %}
-    <ul class="list-group mb-4">
-      {% for participation in project.participations.all %}
-        <li class="list-group-item">
-          <strong>{{ participation.designer }}</strong>
-          <span class="badge bg-primary ms-2">{{ participation.get_role_display }}</span>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p class="text-muted">No team members assigned yet.</p>
-  {% endif %}
-
-  <div class="mt-5">
-    <a href="{% url 'project_edit' project.slug %}" class="btn btn-warning">Edit Project</a>
-    <a href="{% url 'project_delete' project.slug %}" class="btn btn-danger">Delete Project</a>
-    <a href="{% url 'project_list' %}" class="btn btn-outline-secondary">Back to All Projects</a>
-  </div>
+</div>
 {% endblock %}

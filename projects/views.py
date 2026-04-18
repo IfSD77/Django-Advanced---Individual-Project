@@ -1,12 +1,10 @@
-from django.db.models import Sum, Avg
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from accounts.mixins import AdministratorRequiredMixin
-from designers.models import Designer
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Sum, Avg
+from django.shortcuts import render
+from .models import Project
 from .forms import ProjectForm
-from .models import Project, ConstructionType
 
 
 class ProjectListView(ListView):
@@ -24,74 +22,49 @@ class ProjectDetailView(DetailView):
     slug_url_kwarg = 'slug'
 
 
-class ProjectCreateView(CreateView):
+class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = Project
     form_class = ProjectForm
     template_name = 'projects/project_form.html'
     success_url = reverse_lazy('project_list')
 
 
-class ProjectUpdateView(UpdateView):
+class ProjectUpdateView(LoginRequiredMixin, UpdateView):
     model = Project
     form_class = ProjectForm
     template_name = 'projects/project_form.html'
-    success_url = reverse_lazy('project_list')
+
+    def get_success_url(self):
+        return reverse_lazy('project_detail', kwargs={'slug': self.object.slug})
 
 
-class ProjectDeleteView(DeleteView):
+class ProjectDeleteView(LoginRequiredMixin, DeleteView):
     model = Project
     template_name = 'projects/project_confirm_delete.html'
     success_url = reverse_lazy('project_list')
 
 
-class ProjectCreateView(AdministratorRequiredMixin, CreateView):
-    model = Project
-    form_class = ProjectForm
-    template_name = 'projects/project_form.html'
-    success_url = reverse_lazy('project_list')
-
-
-class ProjectUpdateView(AdministratorRequiredMixin, UpdateView):
-    model = Project
-    form_class = ProjectForm
-    template_name = 'projects/project_form.html'
-    success_url = reverse_lazy('project_list')
-
-
-class ProjectDeleteView(AdministratorRequiredMixin, DeleteView):
-    model = Project
-    template_name = 'projects/project_confirm_delete.html'
-    success_url = reverse_lazy('project_list')
-
-
-def project_stats(request: HttpRequest) -> HttpResponse:
-    total_projects = Project.objects.count()
-    total_value = Project.objects.filter(contract_value__isnull=False, contract_value_confidential=False).aggregate(total=Sum('contract_value'))['total'] or 0
-    average_value = Project.objects.filter(contract_value__isnull=False, contract_value_confidential=False).aggregate(avg=Avg('contract_value'))['avg'] or 0
-
+def project_stats(request):
+    projects = Project.objects.all()
+    
+    total_projects = projects.count()
+    total_value = projects.aggregate(Sum('contract_value'))['contract_value__sum'] or 0
+    avg_value = projects.aggregate(Avg('contract_value'))['contract_value__avg'] or 0
+    
     context = {
         'total_projects': total_projects,
-        'total_value': total_value,
-        'average_value': average_value,
+        'total_value': f"£{total_value:,.0f}" if total_value else "£0",
+        'avg_value': f"£{avg_value:,.0f}" if avg_value else "£0",
     }
+    
     return render(request, 'projects/project_stats.html', context)
 
 
-def project_by_year(request: HttpRequest, year) -> HttpResponse:
-    projects = Project.objects.filter(built_in=year).order_by('name')
-    context = {'projects': projects, 'year': year}
-    return render(request, 'projects/project_by_year.html', context)
-
-
-def project_by_type(request: HttpRequest, type_id) -> HttpResponse:
-    ctype = ConstructionType.objects.get(id=type_id)
-    projects = Project.objects.filter(construction_type=ctype).order_by('-built_in')
-    context = {'projects': projects, 'construction_type': ctype.name}
-    return render(request, 'projects/projects_by_type.html', context)
-
-
-def projects_by_designer(request: HttpRequest, designer_id: int) -> HttpResponse:
-    designer = get_object_or_404(Designer, id=designer_id)
-    projects = Project.objects.filter(participations__designer=designer).order_by('-built_in')
-    context = {'projects': projects, 'designer': designer}
-    return render(request, 'projects/projects_by_designer.html', context)
+def projects_by_type(request):
+    from django.db.models import Count
+    projects_by_type = {}
+    for ct in Project.objects.values('construction_type__name').annotate(count=Count('id')).order_by('construction_type__name'):
+        name = ct['construction_type__name']
+        projects_by_type[name] = Project.objects.filter(construction_type__name=name)
+    
+    return render(request, 'projects/projects_by_type.html', {'projects_by_type': projects_by_type})

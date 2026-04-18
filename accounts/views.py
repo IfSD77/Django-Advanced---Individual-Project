@@ -25,7 +25,11 @@ class RegisterView(CreateView):
         user = form.save()
         login(self.request, user)
 
-        send_welcome_email.delay(user.email, user.username)
+        # Опитваме да изпратим welcome email, но ако Celery/Redis не работи - не сриваме регистрацията
+        try:
+            send_welcome_email.delay(user.email, user.username)
+        except Exception:
+            pass  # Silent fail
 
         return redirect('home')
 
