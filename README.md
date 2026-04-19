@@ -91,4 +91,3 @@ The project is deployed on **AWS EC2** (Ubuntu 24.04).
 - Public pages are accessible to anonymous users
 - Uploaded images are stored in the `media/` folder
 - Celery tasks are handled gracefully if Redis is unavailable
-
