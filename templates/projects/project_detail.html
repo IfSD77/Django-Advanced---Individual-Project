@@ -1,16 +1,12 @@
 {% extends 'base.html' %}
-
 {% block title %}{{ project.name }}{% endblock %}
-
 {% block content %}
 <div class="container my-5">
     <h1 class="mb-4">{{ project.name }}</h1>
-    
-    {% if project.image %}
-        <img src="{{ project.image.url }}" alt="{{ project.name }}" class="img-fluid mb-4 rounded shadow" style="max-height: 500px; object-fit: contain;">
-    {% else %}
-        <img src="https://via.placeholder.com/800x500?text=No+Image+Available" alt="No image" class="img-fluid mb-4 rounded shadow">
-    {% endif %}
+
+    <div class="alert alert-secondary mb-4">
+        Project image is not available in this deployment.
+    </div>
 
     <div class="row mb-5">
         <div class="col-md-6">
@@ -43,14 +39,14 @@
     {% endif %}
 
     {% if user.is_authenticated and user.is_superuser %}
-        <div class="mt-4">
-            <a href="{% url 'project_edit' project.slug %}" class="btn btn-warning me-2">Edit Project</a>
-            <a href="{% url 'project_delete' project.slug %}" class="btn btn-danger">Delete Project</a>
-        </div>
+    <div class="mt-4">
+        <a href="{% url 'project_edit' project.slug %}" class="btn btn-warning me-2">Edit Project</a>
+        <a href="{% url 'project_delete' project.slug %}" class="btn btn-danger">Delete Project</a>
+    </div>
     {% endif %}
 
     <div class="mt-5">
-        <a href="{% url 'project_list' %}" class="btn btn-outline-secondary">Back to All Projects</a>
+        <a href="{% url 'project_list' %}" class="btn btn-outline-secondary">← Back to All Projects</a>
     </div>
 </div>
 {% endblock %}
