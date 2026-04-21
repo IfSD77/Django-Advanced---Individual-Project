@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Designers - Structural Portfolio UK{% endblock %}
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4">Our Design Team</h2>
+    
+    {% if designer_stats %}
+        <div class="row">
+            {% for item in designer_stats %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.designer.full_name }}</h5>
+                        <p class="card-text">
+                            <strong>Profession:</strong> {{ item.designer.get_profession_display }}<br>
+                            <strong>Projects participated:</strong> <span class="badge bg-primary">{{ item.project_count }}</span>
+                        </p>
+                        {% if item.designer.short_bio %}
+                            <p class="card-text text-muted">{{ item.designer.short_bio|truncatewords:25 }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer text-end">
+                        <a href="{{ item.designer.get_absolute_url }}" class="btn btn-primary btn-sm">
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">No designers found.</p>
+    {% endif %}
+</div>
+{% endblock %}

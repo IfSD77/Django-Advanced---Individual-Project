@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Home Extra - Recent Projects{% endblock %}
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4">Recent Projects</h2>
+    
+    {% if recent_projects %}
+        <div class="row">
+            {% for project in recent_projects %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    {% if project.image %}
+                        <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.name }}" style="height: 180px; object-fit: cover;">
+                    {% else %}
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
+                            <span class="text-muted">No Image</span>
+                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ project.name }}</h5>
+                        <p class="card-text">
+                            <strong>Built:</strong> {{ project.built_in|default:"N/A" }}<br>
+                            <strong>Location:</strong> {{ project.location }}
+                        </p>
+                        <a href="{% url 'project_detail' project.slug %}" class="btn btn-primary btn-sm">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">No projects found.</p>
+    {% endif %}
+</div>
+{% endblock %}

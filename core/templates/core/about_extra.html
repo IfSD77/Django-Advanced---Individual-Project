@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}About - Extended{% endblock %}
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4">More About This Portfolio</h2>
+    <p class="lead">
+        This project was built from scratch as part of the SoftUni Django Advanced course. 
+        It demonstrates advanced Django concepts including custom user models, group-based permissions, 
+        asynchronous tasks with Celery, and clean deployment on AWS EC2.
+    </p>
+    <div class="mt-4">
+        <h4>Key Features Implemented:</h4>
+        <ul>
+            <li>Full CRUD for Projects with Many-to-Many team participation</li>
+            <li>Role-based access (Administrators vs Viewers)</li>
+            <li>Graceful Celery email handling</li>
+            <li>Responsive Bootstrap 5 design</li>
+            <li>Custom 404 and 500 error pages</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

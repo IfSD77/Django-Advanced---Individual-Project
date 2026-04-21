@@ -29,28 +29,17 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'project_list' %}">All Projects</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'projects_by_type' %}">Projects by Type</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'project_stats' %}">Statistics</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'about' %}">About</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'project_list' %}">All Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'projects_by_type' %}">Projects by Type</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'project_stats' %}">Statistics</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'designers' %}">Designers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'about_extra' %}">Additional Info</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
                     {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'profile' %}">Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <span class="nav-link text-light">Hello, {{ user.username }}</span>
-                        </li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'profile' %}">Profile</a></li>
+                        <li class="nav-item"><span class="nav-link text-light">Hello, {{ user.username }}</span></li>
                         <li class="nav-item">
                             <form method="post" action="{% url 'logout' %}" class="logout-form">
                                 {% csrf_token %}
@@ -58,12 +47,8 @@
                             </form>
                         </li>
                     {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'register' %}">Register</a>
-                        </li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
                     {% endif %}
                 </ul>
             </div>

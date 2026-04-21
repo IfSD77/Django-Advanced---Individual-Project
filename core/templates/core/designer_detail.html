@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}{{ designer.full_name }}{% endblock %}
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4">{{ designer.full_name }}</h1>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <h4>Profession</h4>
+            <p class="lead">{{ designer.get_profession_display }}</p>
+            
+            {% if designer.short_bio %}
+            <h4 class="mt-4">Short Bio</h4>
+            <p>{{ designer.short_bio|linebreaks }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <h3 class="mt-5">Projects Participated ({{ participations.count }})</h3>
+    {% if participations %}
+        <div class="row">
+            {% for participation in participations %}
+            <div class="col-md-6 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ participation.project.name }}</h5>
+                        <p class="card-text">
+                            <strong>Role:</strong> {{ participation.get_role_display }}<br>
+                            <strong>Built in:</strong> {{ participation.project.built_in|default:"N/A" }}
+                        </p>
+                        <a href="{{ participation.project.get_absolute_url }}" class="btn btn-primary btn-sm">View Project</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">This designer has not participated in any projects yet.</p>
+    {% endif %}
+
+    <div class="mt-4">
+        <a href="{% url 'designers' %}" class="btn btn-outline-secondary">← Back to All Designers</a>
+    </div>
+</div>
+{% endblock %}
