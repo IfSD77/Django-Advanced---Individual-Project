@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
-
+from django.conf import settings
+from django.conf.urls.static import static
 from projects.views import (
     ProjectListView, ProjectDetailView, ProjectCreateView,
     ProjectUpdateView, ProjectDeleteView, project_stats, projects_by_type
@@ -42,12 +43,10 @@ urlpatterns = [
     path('about/', TemplateView.as_view(template_name='about.html'), name='about'),
 ]
 
-# Custom error handlers
+
 handler404 = 'core.views.custom_404'
 handler500 = 'django.views.defaults.server_error'
 
-from django.conf import settings
-from django.conf.urls.static import static
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
